@@ -141,34 +141,34 @@ export default function Preview3D({
             Wireframe
           </label>
         </div>
+      </div>
 
-        <div
-          style={{ flex: 1, minHeight: 0, borderRadius: 8, overflow: "hidden" }}
+      <div
+        style={{ flex: 1, minHeight: 0, borderRadius: 8, overflow: "hidden" }}
+      >
+        <Canvas
+          camera={{ fov: 50, position: [50, 60, 60] }}
+          onCreated={({ camera }) =>
+            fitCamera(camera as THREE.PerspectiveCamera, scene, centerRef)
+          }
+          style={{ background: "linear-gradient(180deg,#171a21,#0f1115)" }}
         >
-          <Canvas
-            camera={{ fov: 50, position: [50, 60, 60] }}
-            onCreated={({ camera }) =>
-              fitCamera(camera as THREE.PerspectiveCamera, scene, centerRef)
-            }
-            style={{ background: "linear-gradient(180deg,#171a21,#0f1115)" }}
-          >
-            <ambientLight intensity={0.7} />
-            <directionalLight position={[40, 60, 20]} intensity={1.1} />
-            <directionalLight position={[-30, 20, -30]} intensity={0.4} />
-            <Scene scene={scene} wireframe={wireframe} />
-            <OrbitControls
-              ref={controlsRef}
-              makeDefault
-              enablePan
-              enableZoom
-              autoRotate
-              autoRotateSpeed={0.35}
-            />
-          </Canvas>
-        </div>
-        <div className="editor-hint" style={{ marginTop: 8 }}>
-          Drag to orbit · scroll to zoom · right-drag to pan
-        </div>
+          <ambientLight intensity={0.7} />
+          <directionalLight position={[40, 60, 20]} intensity={1.1} />
+          <directionalLight position={[-30, 20, -30]} intensity={0.4} />
+          <Scene scene={scene} wireframe={wireframe} />
+          <OrbitControls
+            ref={controlsRef}
+            makeDefault
+            enablePan
+            enableZoom
+            autoRotate
+            autoRotateSpeed={0.35}
+          />
+        </Canvas>
+      </div>
+      <div className="editor-hint" style={{ marginTop: 8 }}>
+        Drag to orbit · scroll to zoom · right-drag to pan
       </div>
     </div>
   );
