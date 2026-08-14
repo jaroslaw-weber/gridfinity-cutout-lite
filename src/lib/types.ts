@@ -1,5 +1,7 @@
 export type CutoutType = 'circle' | 'capsule' | 'rounded-rect' | 'rectangle'
 
+export type ViewMode = 'print' | 'preview'
+
 export interface BaseCutout {
   id: string
   type: CutoutType

@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useState } from 'react'
-import type { Cutout, CutoutType, InsertParameters } from '../lib/types'
+import type { Cutout, CutoutType, InsertParameters, ViewMode } from '../lib/types'
 import { defaults, makeCutout } from '../lib/types'
-import { buildScene, defaultFilename, exportSTL } from '../lib/geometry'
+import { buildDisplayScene, buildScene, defaultFilename, exportSTL } from '../lib/geometry'
 import ParametersPanel from './ParametersPanel'
 import Editor2D from './Editor2D'
 import Preview3D from './Preview3D'
+import { Button } from './ui/button'
 
 function initialParams(): InsertParameters {
   const c1 = makeCutout('circle', 1)
@@ -24,6 +25,7 @@ function initialParams(): InsertParameters {
 
 export default function App() {
   const [params, setParams] = useState<InsertParameters>(initialParams)
+  const [mode, setMode] = useState<ViewMode>('print')
   const [selectedId, setSelectedId] = useState<string | null>(
     () => initialParams().cutouts[0]?.id ?? null
   )
@@ -87,17 +89,22 @@ export default function App() {
     URL.revokeObjectURL(url)
   }, [params])
 
-  const scene = useMemo(() => buildScene(params), [params])
+  const scene = useMemo(() => buildDisplayScene(params, mode), [params, mode])
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>Gridfinity Cutout Lite</h1>
-        <span className="sub">
+      <header className="flex items-baseline justify-between border-b border-border bg-panel px-[18px] py-3">
+        <h1 className="m-0 text-base font-semibold">Gridfinity Cutout Lite</h1>
+        <span className="text-xs text-muted">
           {params.gridX}×{params.gridY} · {params.heightUnits}U ·{' '}
           {params.width}×{params.depth} mm
         </span>
       </header>
+
+      <p className="m-0 border-b border-border bg-panel px-[18px] py-[10px] text-[13px] text-muted">
+        Design lightweight Gridfinity cutout inserts: pick a grid size, drop cutout
+        shapes onto the plate, then export an STL to print.
+      </p>
 
       <div className="layout">
         <ParametersPanel
@@ -118,14 +125,14 @@ export default function App() {
           onUpdate={updateCutout}
         />
 
-        <Preview3D scene={scene} params={params} />
+        <Preview3D scene={scene} mode={mode} onModeChange={setMode} />
       </div>
 
-      <div className="footer-actions">
-        <button className="primary" onClick={onExport}>
+      <div className="flex gap-2 border-t border-border bg-panel px-[14px] py-3">
+        <Button onClick={onExport}>
           Export STL
-        </button>
-        <span style={{ margin: 'auto 0', color: 'var(--muted)', fontSize: 12 }}>
+        </Button>
+        <span className="m-auto text-xs text-muted">
           Client-side only · STL: {defaultFilename(params)}
         </span>
       </div>

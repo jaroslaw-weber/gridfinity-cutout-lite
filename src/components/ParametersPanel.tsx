@@ -1,5 +1,6 @@
 import type { Cutout, CutoutType, InsertParameters } from '../lib/types'
 import { insertDimension } from '../lib/types'
+import CutoutIcon from './CutoutIcon'
 
 interface Props {
   params: InsertParameters
@@ -197,8 +198,8 @@ export default function ParametersPanel(p: Props) {
 
       <div className="add-bar">
         {CUTOUT_TYPES.map((t) => (
-          <button key={t.type} onClick={() => p.onAdd(t.type)}>
-            + {t.label}
+          <button key={t.type} onClick={() => p.onAdd(t.type)} className="add-btn">
+            <CutoutIcon type={t.type} size={16} /> + {t.label}
           </button>
         ))}
       </div>
@@ -218,7 +219,13 @@ export default function ParametersPanel(p: Props) {
             onClick={() => p.setSelectedId(c.id)}
           >
             <div className="cutout-head">
-              <span className="name">{CUTOUT_TYPES.find((t) => t.type === c.type)?.label}</span>
+              <span className="name">
+                <CutoutIcon
+                  type={c.type}
+                  size={16}
+                />
+                {CUTOUT_TYPES.find((t) => t.type === c.type)?.label}
+              </span>
               <span className="cutout-actions">
                 <button
                   onClick={(e) => {
@@ -249,12 +256,14 @@ export default function ParametersPanel(p: Props) {
                   label="X (mm)"
                   value={c.x}
                   step={0.5}
+                  min={-999}
                   onChange={(v) => p.onUpdate(c.id, { x: v })}
                 />
                 <Num
                   label="Y (mm)"
                   value={c.y}
                   step={0.5}
+                  min={-999}
                   onChange={(v) => p.onUpdate(c.id, { y: v })}
                 />
               </div>

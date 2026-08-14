@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { STLExporter } from 'three-stdlib'
-import { insertDimension, supportHeight, type Cutout, type InsertParameters } from './types'
+import { insertDimension, supportHeight, type Cutout, type InsertParameters, type ViewMode } from './types'
 
 export interface Vec2 {
   x: number
@@ -161,7 +161,7 @@ export function buildScene(params: InsertParameters): THREE.Group {
     curveSegments: 32
   })
   const plate = new THREE.Mesh(plateGeo)
-  plate.position.y = sH
+  plate.position.y = 0
   plate.matrixAutoUpdate = true
   group.add(plate)
 
@@ -178,17 +178,28 @@ export function buildScene(params: InsertParameters): THREE.Group {
     const hwBox = new THREE.Mesh(
       new THREE.BoxGeometry(len, sH, hs)
     )
-    hwBox.position.set(sx * (hw - ins - len / 2), sH / 2, sy * (hd - ins - hs / 2))
+    hwBox.position.set(sx * (hw - ins - len / 2), plateThickness + sH / 2, sy * (hd - ins - hs / 2))
     group.add(hwBox)
 
     // vertical wall (along Z)
     const vwBox = new THREE.Mesh(
       new THREE.BoxGeometry(hs, sH, len)
     )
-    vwBox.position.set(sx * (hw - ins - hs / 2), sH / 2, sy * (hd - ins - len / 2))
+    vwBox.position.set(sx * (hw - ins - hs / 2), plateThickness + sH / 2, sy * (hd - ins - len / 2))
     group.add(vwBox)
   }
 
+  return group
+}
+
+export function buildDisplayScene(
+  params: InsertParameters,
+  mode: ViewMode
+): THREE.Group {
+  const group = buildScene(params)
+  if (mode === 'preview') {
+    group.rotation.x = Math.PI
+  }
   return group
 }
 
