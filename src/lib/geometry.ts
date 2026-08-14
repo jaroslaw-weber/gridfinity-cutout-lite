@@ -193,6 +193,7 @@ export function buildScene(params: InsertParameters): THREE.Group {
 }
 
 export function exportSTL(group: THREE.Group): Blob {
+  group.updateMatrixWorld(true)
   const exporter = new STLExporter()
   const result = exporter.parse(group, { binary: true }) as DataView
   const buffer = result.buffer as ArrayBuffer
