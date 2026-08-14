@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
-import type { ViewMode } from "../lib/types";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 type WireMaterial = THREE.Material & { wireframe: boolean };
@@ -57,20 +56,7 @@ function fitCamera(
   centerRef.current.copy(center);
 }
 
-const MODES: Array<{ value: ViewMode; label: string }> = [
-  { value: "print", label: "Print" },
-  { value: "preview", label: "Preview" },
-];
-
-export default function Preview3D({
-  scene,
-  mode,
-  onModeChange,
-}: {
-  scene: THREE.Group;
-  mode: ViewMode;
-  onModeChange: (m: ViewMode) => void;
-}) {
+export default function Preview3D({ scene }: { scene: THREE.Group }) {
   const [wireframe, setWireframe] = useState(false);
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const centerRef = useRef(new THREE.Vector3());
@@ -96,67 +82,51 @@ export default function Preview3D({
         <h2 className="pane-title" style={{ margin: 0 }}>
           3D Preview
         </h2>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <div
-            className="mode-toggle"
-            style={{
-              display: "inline-flex",
-              border: "1px solid var(--border, #333)",
-              borderRadius: 6,
-              overflow: "hidden",
-            }}
-          >
-            {MODES.map((m) => (
-              <button
-                key={m.value}
-                onClick={() => onModeChange(m.value)}
-                style={{
-                  padding: "3px 10px",
-                  fontSize: 12,
-                  border: "none",
-                  cursor: "pointer",
-                  color: "var(--muted)",
-                  background:
-                    mode === m.value ? "var(--accent, #3b82f6)" : "transparent",
-                }}
-              >
-                {m.label}
-              </button>
-            ))}
-          </div>
-          <label
-            style={{
-              fontSize: 12,
-              color: "var(--muted)",
-              display: "flex",
-              gap: 6,
-              alignItems: "center",
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={wireframe}
-              onChange={(e) => setWireframe(e.target.checked)}
-            />
-            Wireframe
-          </label>
-        </div>
+        <label
+          style={{
+            fontSize: 12,
+            color: "var(--muted)",
+            display: "flex",
+            gap: 6,
+            alignItems: "center",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={wireframe}
+            onChange={(e) => setWireframe(e.target.checked)}
+          />
+          Wireframe
+        </label>
       </div>
 
       <div
         style={{ flex: 1, minHeight: 0, borderRadius: 8, overflow: "hidden" }}
       >
         <Canvas
+          shadows
           camera={{ fov: 50, position: [50, 60, 60] }}
           onCreated={({ camera }) =>
             fitCamera(camera as THREE.PerspectiveCamera, scene, centerRef)
           }
           style={{ background: "linear-gradient(180deg,#171a21,#0f1115)" }}
         >
-          <ambientLight intensity={0.7} />
-          <directionalLight position={[40, 60, 20]} intensity={1.1} />
-          <directionalLight position={[-30, 20, -30]} intensity={0.4} />
+          <ambientLight intensity={0.5} />
+          <directionalLight
+            position={[30, 50, 30]}
+            intensity={1.6}
+            castShadow
+          />
+          <directionalLight position={[-40, 20, -40]} intensity={0.5} />
           <Scene scene={scene} wireframe={wireframe} />
+          <ContactShadows
+            position={[0, 0, 0]}
+            opacity={0.6}
+            scale={120}
+            blur={2}
+            far={120}
+            resolution={512}
+          />
           <OrbitControls
             ref={controlsRef}
             makeDefault

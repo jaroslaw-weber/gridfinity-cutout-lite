@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
-import type { Cutout, CutoutType, InsertParameters, ViewMode } from '../lib/types'
+import type { Cutout, CutoutType, InsertParameters } from '../lib/types'
 import { defaults, makeCutout } from '../lib/types'
-import { buildDisplayScene, buildScene, defaultFilename, exportSTL } from '../lib/geometry'
+import { buildScene, defaultFilename, exportSTL } from '../lib/geometry'
 import ParametersPanel from './ParametersPanel'
 import Editor2D from './Editor2D'
 import Preview3D from './Preview3D'
@@ -25,7 +25,6 @@ function initialParams(): InsertParameters {
 
 export default function App() {
   const [params, setParams] = useState<InsertParameters>(initialParams)
-  const [mode, setMode] = useState<ViewMode>('print')
   const [selectedId, setSelectedId] = useState<string | null>(
     () => initialParams().cutouts[0]?.id ?? null
   )
@@ -89,7 +88,7 @@ export default function App() {
     URL.revokeObjectURL(url)
   }, [params])
 
-  const scene = useMemo(() => buildDisplayScene(params, mode), [params, mode])
+  const scene = useMemo(() => buildScene(params), [params])
 
   return (
     <div className="app">
@@ -125,7 +124,7 @@ export default function App() {
           onUpdate={updateCutout}
         />
 
-        <Preview3D scene={scene} mode={mode} onModeChange={setMode} />
+        <Preview3D scene={scene} />
       </div>
 
       <div className="flex gap-2 border-t border-border bg-panel px-[14px] py-3">
