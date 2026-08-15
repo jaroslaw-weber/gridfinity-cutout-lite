@@ -51,7 +51,7 @@ Example:
     "type": "l-wall",
     "thickness": 1.4,
     "length": 7,
-    "inset": 0.8
+    "inset": 0
   },
 
   "cutouts": [

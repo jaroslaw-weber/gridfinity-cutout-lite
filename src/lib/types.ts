@@ -90,7 +90,7 @@ export const defaults = {
 
   supportThickness: 1.4,
   supportLength: 7,
-  supportInset: 0.8
+  supportInset: 0
 }
 
 export interface InsertParameters {

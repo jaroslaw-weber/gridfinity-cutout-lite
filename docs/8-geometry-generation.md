@@ -44,7 +44,7 @@ Default:
 ```text
 wall thickness: 1.4 mm
 wall length:    7 mm
-edge inset:     0.8 mm
+edge inset:     0 mm
 ```
 
 These supports provide stability while using much less material than solid legs.

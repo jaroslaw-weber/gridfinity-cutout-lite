@@ -9,7 +9,7 @@ plate with integrated minimal corner supports that drops into a standard
 Gridfinity bin. Less filament, faster prints, and easy to tweak in millimeters.
 
 <p align="center">
-  <img src="cutout-tool.png" alt="Gridfinity Cutout Lite editor" width="800" />
+  <img src="cutout-tool-v2.png" alt="Gridfinity Cutout Lite editor" width="800" />
 </p>
 
 ## Features
