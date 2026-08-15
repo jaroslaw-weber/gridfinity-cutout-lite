@@ -2,15 +2,15 @@
 
 A parametric, browser-based tool for generating lightweight Gridfinity cutout inserts.
 
+https://github.com/user-attachments/assets/1f2ba874-109c-44df-9da0-9a7a544179ab
+
 > **Live site:** https://jaroslaw-weber.github.io/gridfinity-cutout-lite/
 
 Instead of printing a full custom bin around an object, it creates a thin cutout
 plate with integrated minimal corner supports that drops into a standard
 Gridfinity bin. Less filament, faster prints, and easy to tweak in millimeters.
 
-<p align="center">
-  <img src="cutout-tool-v2.png" alt="Gridfinity Cutout Lite editor" width="800" />
-</p>
+
 
 ## Features
 
