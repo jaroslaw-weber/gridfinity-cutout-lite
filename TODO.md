@@ -2,5 +2,5 @@
 
 things that should be done
 
-- [x] for the mobile view just show everything in a flex rows. and big text that recommend to use desktop view. for desktop 3 column view is nice.
-- [x] add linter so max file size (max lines) is 200 lines
+- [ ] run linter and fix stuff
+- [ ] diameter slider in circle is overflowing
