@@ -27,18 +27,65 @@ function Num({
   min?: number
 }) {
   return (
-    <div className="field">
-      <label>{label}</label>
+    <div className="mb-3 min-w-0 flex-1">
+      <label className="mb-1 block text-[12px] text-muted">{label}</label>
       <input
         type="number"
         value={value}
         step={step}
         min={min}
+        className="w-full rounded-md border border-border bg-panel-2 px-2 py-[6px] text-[13px]"
         onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
       />
     </div>
   )
 }
+
+function SliderNum({
+  label,
+  value,
+  onChange,
+  min = 0,
+  max,
+  step = 0.5
+}: {
+  label: string
+  value: number
+  onChange: (v: number) => void
+  min?: number
+  max: number
+  step?: number
+}) {
+  return (
+    <div className="mb-3 min-w-0 flex-1">
+      <label className="mb-1 block text-[12px] text-muted">{label}</label>
+      <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-panel-2 px-2 py-[6px]">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(parseFloat(e.target.value) || min)}
+          className="min-w-0 flex-1 accent-[#4f8cff]"
+        />
+        <input
+          type="number"
+          value={value}
+          step={step}
+          min={min}
+          max={max}
+          className="w-[52px] min-w-[52px] rounded-md border border-border bg-panel-2 px-[6px] py-1 text-center text-[13px]"
+          onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+    </div>
+  )
+}
+
+const BTN =
+  'cursor-pointer rounded-md border border-border bg-panel-2 px-[11px] py-[7px] text-[13px] hover:border-accent-2 hover:text-accent-2'
+const BTN_SM = `${BTN} px-[7px] py-[3px] text-[12px] ml-1`
 
 const CUTOUT_TYPES: Array<{ type: CutoutType; label: string }> = [
   { type: 'circle', label: 'Circle' },
@@ -54,90 +101,88 @@ function shapeFields(c: Cutout, onChange: (p: Partial<Cutout>) => void) {
   switch (c.type) {
     case 'circle':
       return (
-        <Num
+        <SliderNum
           label="Diameter (mm)"
           value={c.diameter}
-          step={0.1}
+          min={2}
+          max={100}
+          step={0.5}
           onChange={(v) => onChange({ diameter: v })}
         />
       )
     case 'capsule':
       return (
-        <div className="row">
-          <Num
+        <>
+          <SliderNum
             label="Width (mm)"
             value={c.width}
-            step={0.1}
+            min={2}
+            max={100}
+            step={0.5}
             onChange={(v) => onChange({ width: v })}
           />
-          <Num
+          <SliderNum
             label="Height (mm)"
             value={c.height}
-            step={0.1}
+            min={2}
+            max={100}
+            step={0.5}
             onChange={(v) => onChange({ height: v })}
           />
-        </div>
+        </>
       )
     case 'rounded-rect':
       return (
         <>
-          <div className="row">
-            <Num
-              label="Width (mm)"
-              value={c.width}
-              step={0.1}
-              onChange={(v) => onChange({ width: v })}
-            />
-            <Num
-              label="Height (mm)"
-              value={c.height}
-              step={0.1}
-              onChange={(v) => onChange({ height: v })}
-            />
-          </div>
-          <Num
+          <SliderNum
+            label="Width (mm)"
+            value={c.width}
+            min={2}
+            max={100}
+            step={0.5}
+            onChange={(v) => onChange({ width: v })}
+          />
+          <SliderNum
+            label="Height (mm)"
+            value={c.height}
+            min={2}
+            max={100}
+            step={0.5}
+            onChange={(v) => onChange({ height: v })}
+          />
+          <SliderNum
             label="Radius (mm)"
             value={c.radius}
-            step={0.1}
+            min={0}
+            max={50}
+            step={0.5}
             onChange={(v) => onChange({ radius: v })}
           />
         </>
       )
     case 'rectangle':
-      return (
-        <div className="row">
-          <Num
-            label="Width (mm)"
-            value={c.width}
-            step={0.1}
-            onChange={(v) => onChange({ width: v })}
-          />
-          <Num
-            label="Height (mm)"
-            value={c.height}
-            step={0.1}
-            onChange={(v) => onChange({ height: v })}
-          />
-        </div>
-      )
     case 'triangle':
     case 'diamond':
     case 'hexagon':
       return (
-        <div className="row">
-          <Num
+        <>
+          <SliderNum
             label="Width (mm)"
             value={c.width}
-            step={0.1}
+            min={2}
+            max={100}
+            step={0.5}
             onChange={(v) => onChange({ width: v })}
           />
-          <Num
+          <SliderNum
             label="Height (mm)"
             value={c.height}
-            step={0.1}
+            min={2}
+            max={100}
+            step={0.5}
             onChange={(v) => onChange({ height: v })}
           />
-        </div>
+        </>
       )
   }
 }
@@ -153,15 +198,17 @@ export default function ParametersPanel(p: Props) {
   const selected = params.cutouts.find((c) => c.id === p.selectedId) ?? null
 
   return (
-    <div className="pane">
-      <h2 className="pane-title">Parameters</h2>
+    <div className="overflow-auto bg-panel p-[14px]">
+      <h2 className="mb-3 text-[12px] uppercase tracking-widest text-muted">
+        Parameters
+      </h2>
 
-      <div className="row">
+      <div className="flex gap-2">
         <Num label="Grid X" value={params.gridX} step={1} onChange={onGridX} />
         <Num label="Grid Y" value={params.gridY} step={1} onChange={onGridY} />
       </div>
 
-      <div className="row">
+      <div className="flex gap-2">
         <Num
           label="Width (mm)"
           value={params.width}
@@ -176,19 +223,9 @@ export default function ParametersPanel(p: Props) {
         />
       </div>
 
-      <div className="field height-slider">
-        <label>Height (U)</label>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            background: 'var(--panel-2)',
-            border: '1px solid var(--border)',
-            borderRadius: 6,
-            padding: '6px 8px'
-          }}
-        >
+      <div className="mb-3">
+        <label className="mb-1 block text-[12px] text-muted">Height (U)</label>
+        <div className="flex items-center gap-2 rounded-md border border-border bg-panel-2 px-2 py-[6px]">
           <input
             type="range"
             min={1}
@@ -198,23 +235,17 @@ export default function ParametersPanel(p: Props) {
             onChange={(e) =>
               patch({ heightUnits: parseFloat(e.target.value) || 1 })
             }
-            style={{ flex: 1, accentColor: '#4f8cff' }}
+            className="min-w-0 flex-1 accent-[#4f8cff]"
           />
           <output
-            style={{
-              minWidth: 28,
-              textAlign: 'center',
-              fontSize: 13,
-              color: 'var(--accent-2)',
-              fontWeight: 600
-            }}
+            className="w-7 text-center text-[13px] font-semibold text-accent-2"
           >
             {params.heightUnits}
           </output>
         </div>
       </div>
 
-      <div className="row">
+      <div className="flex gap-2">
         <Num
           label="Plate Thickness (mm)"
           value={params.plateThickness}
@@ -254,18 +285,24 @@ export default function ParametersPanel(p: Props) {
         />
       </details>
 
-      <h2 className="pane-title">Cutouts</h2>
+      <h2 className="mb-3 text-[12px] uppercase tracking-widest text-muted">
+        Cutouts
+      </h2>
 
-      <div className="add-bar">
+      <div className="mb-3 flex flex-wrap gap-1.5">
         {CUTOUT_TYPES.map((t) => (
-          <button key={t.type} onClick={() => p.onAdd(t.type)} className="add-btn">
+          <button
+            key={t.type}
+            onClick={() => p.onAdd(t.type)}
+            className={`${BTN} flex items-center gap-1`}
+          >
             <CutoutIcon type={t.type} size={16} /> + {t.label}
           </button>
         ))}
       </div>
 
       {params.cutouts.length === 0 && (
-        <p style={{ color: 'var(--muted)', fontSize: 12 }}>
+        <p className="text-[12px] text-muted">
           No cutouts yet. Add one above, or choose a preset below.
         </p>
       )}
@@ -275,43 +312,49 @@ export default function ParametersPanel(p: Props) {
         return (
           <div
             key={c.id}
-            className={`cutout${sel ? ' selected' : ''}`}
+            className={`mb-2 rounded-lg border bg-panel-2 p-[10px]${
+              sel ? ' border-accent' : ' border-border'
+            }`}
             onClick={() => p.setSelectedId(c.id)}
           >
-            <div className="cutout-head">
-              <span className="name">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="flex items-center gap-1 text-[13px] font-semibold">
                 <CutoutIcon
                   cutout={c}
                   size={16}
                 />
                 {CUTOUT_TYPES.find((t) => t.type === c.type)?.label}
               </span>
-              <span className="cutout-actions">
+              <span className="flex">
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     p.onDuplicate(c.id)
                   }}
                   title="Duplicate"
+                  className={BTN_SM}
                 >
                   ⧉
                 </button>
                 <button
-                  className="danger"
                   onClick={(e) => {
                     e.stopPropagation()
                     p.onRemove(c.id)
                   }}
                   title="Remove"
+                  className={`${BTN_SM} hover:border-danger hover:text-danger`}
                 >
                   ✕
                 </button>
               </span>
             </div>
 
-            <fieldset className="cutout-fields" onClick={(e) => e.stopPropagation()}>
+            <fieldset
+              className="m-0 border-0 p-0"
+              onClick={(e) => e.stopPropagation()}
+            >
               {shapeFields(c, (patch) => p.onUpdate(c.id, patch))}
-              <div className="row">
+              <div className="flex gap-2">
                 <Num
                   label="X (mm)"
                   value={c.x}
@@ -327,16 +370,20 @@ export default function ParametersPanel(p: Props) {
                   onChange={(v) => p.onUpdate(c.id, { y: v })}
                 />
               </div>
-              <div className="row">
-                <Num
+              <div className="flex gap-2">
+                <SliderNum
                   label="Rotation (°)"
                   value={c.rotation}
+                  min={0}
+                  max={360}
                   step={5}
                   onChange={(v) => p.onUpdate(c.id, { rotation: v })}
                 />
-                <Num
+                <SliderNum
                   label="Clearance (mm)"
                   value={c.clearance}
+                  min={0}
+                  max={1}
                   step={0.05}
                   onChange={(v) => p.onUpdate(c.id, { clearance: v })}
                 />
@@ -347,7 +394,7 @@ export default function ParametersPanel(p: Props) {
       })}
 
       {selected && (
-        <p style={{ color: 'var(--muted)', fontSize: 12, marginTop: 8 }}>
+        <p className="mt-2 text-[12px] text-muted">
           Tip: drag the shape in the 2D editor to position it.
         </p>
       )}

@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { STLExporter } from 'three-stdlib'
+import polygonClipping from 'polygon-clipping'
 import { insertDimension, supportHeight, type Cutout, type InsertParameters } from './types'
 
 export interface Vec2 {
@@ -162,6 +163,25 @@ function signedArea(pts: Vec2[]): number {
   return sum / 2
 }
 
+// Compute the boolean union of all cutout polygons so that overlapping
+// cutouts merge into a single (possibly multi-contour) hole shape. Returns
+// rings wound in the same direction as the plate outline (clockwise).
+export function unitedCutouts(params: InsertParameters): Vec2[][] {
+  const polys = params.cutouts.map((c) => [
+    cutoutPoints(c).map((p) => [p.x, p.y] as [number, number])
+  ])
+  const result = polygonClipping.union(polys) as Array<Array<Array<[number, number]>>>
+  const rings: Vec2[][] = []
+  for (const poly of result) {
+    for (const ring of poly) {
+      const pts = ring.map(([x, y]) => ({ x, y }))
+      if (signedArea(pts) > 0) pts.reverse()
+      rings.push(pts)
+    }
+  }
+  return rings
+}
+
 export function buildScene(params: InsertParameters): THREE.Group {
   const group = new THREE.Group()
 
@@ -184,9 +204,7 @@ export function buildScene(params: InsertParameters): THREE.Group {
   shape.lineTo(-hw, hd)
   shape.closePath()
 
-  for (const cutout of params.cutouts) {
-    let pts = cutoutPoints(cutout)
-    if (signedArea(pts) > 0) pts = pts.slice().reverse()
+  for (const pts of unitedCutouts(params)) {
     const hole = new THREE.Path()
     hole.moveTo(pts[0].x, pts[0].y)
     for (let i = 1; i < pts.length; i++) hole.lineTo(pts[i].x, pts[i].y)

@@ -68,32 +68,49 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
   const platePath = ptsToPath(plate)
 
   return (
-    <div className="pane editor-wrap">
-      <h2 className="pane-title">2D Editor</h2>
-      <div className="editor-bounds">
+    <div className="flex h-full flex-col overflow-auto bg-panel p-[14px]">
+      <h2 className="mb-3 text-[12px] uppercase tracking-widest text-muted">
+        2D Editor
+      </h2>
+      <div
+        className="flex flex-1 items-center justify-center rounded-lg"
+        style={{
+          minHeight: 0,
+          background:
+            'radial-gradient(circle at 40% 40%, #1b1f27 0, #15181f 100%)'
+        }}
+      >
         <svg
           ref={svgRef}
           viewBox={`${-halfX} ${-halfY} ${halfX * 2} ${halfY * 2}`}
           style={{ cursor, touchAction: 'none' }}
+          className="max-h-full max-w-full"
           onPointerMove={onMove}
           onPointerUp={endDrag}
           onPointerLeave={endDrag}
         >
           <line
-            className="axis-line"
+            className="stroke-border"
+            strokeWidth={1}
             x1={-params.width / 2}
             y1={0}
             x2={params.width / 2}
             y2={0}
           />
           <line
-            className="axis-line"
+            className="stroke-border"
+            strokeWidth={1}
             x1={0}
             y1={-params.depth / 2}
             x2={0}
             y2={params.depth / 2}
           />
-          <path className="plate-outline" d={platePath} />
+          <path
+            className="fill-[rgba(79,140,255,0.04)] stroke-muted"
+            strokeWidth={1}
+            strokeDasharray="4 4"
+            d={platePath}
+          />
 
           {params.cutouts.map((c) => {
             const pts = cutoutPoints(c)
@@ -101,7 +118,10 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
             return (
               <path
                 key={c.id}
-                className={`outline${sel ? ' selected' : ''}`}
+                className={`fill-none ${
+                  sel ? 'stroke-[#ffd166]' : 'stroke-accent'
+                }`}
+                strokeWidth={sel ? 2.5 : 1.5}
                 d={ptsToPath(pts)}
                 onPointerDown={(e) => beginDrag(e, c)}
                 onPointerEnter={() => setCursor('move')}
@@ -111,7 +131,7 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
           })}
         </svg>
       </div>
-      <div className="editor-hint">
+      <div className="mt-2 text-center text-[11px] text-muted">
         Drag shapes to position · X/Y = {params.width}×{params.depth} mm · center{' '}
         = (0, 0)
       </div>

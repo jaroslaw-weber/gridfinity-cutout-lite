@@ -67,30 +67,12 @@ export default function Preview3D({ scene }: { scene: THREE.Group }) {
   }, []);
 
   return (
-    <div
-      className="pane preview-pane"
-      style={{ padding: 14, display: "flex", flexDirection: "column" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 10,
-        }}
-      >
-        <h2 className="pane-title" style={{ margin: 0 }}>
+    <div className="preview-pane flex min-h-0 flex-col overflow-auto bg-panel p-[14px]">
+      <div className="mb-[10px] flex items-center justify-between">
+        <h2 className="m-0 text-[12px] uppercase tracking-widest text-muted">
           3D Preview
         </h2>
-        <label
-          style={{
-            fontSize: 12,
-            color: "var(--muted)",
-            display: "flex",
-            gap: 6,
-            alignItems: "center",
-          }}
-        >
+        <label className="flex items-center gap-[6px] text-[12px] text-muted">
           <input
             type="checkbox"
             checked={wireframe}
@@ -101,7 +83,7 @@ export default function Preview3D({ scene }: { scene: THREE.Group }) {
       </div>
 
       <div
-        style={{ flex: 1, minHeight: 0, borderRadius: 8, overflow: "hidden" }}
+        className="min-h-0 flex-1 overflow-hidden rounded-lg"
       >
         <Canvas
           shadows
@@ -137,7 +119,7 @@ export default function Preview3D({ scene }: { scene: THREE.Group }) {
           />
         </Canvas>
       </div>
-      <div className="editor-hint" style={{ marginTop: 8 }}>
+      <div className="mt-2 text-center text-[11px] text-muted">
         Drag to orbit · scroll to zoom · right-drag to pan
       </div>
     </div>
