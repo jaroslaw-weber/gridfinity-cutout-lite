@@ -8,6 +8,21 @@ import ParametersPanel from './ParametersPanel'
 import Preview3D from './Preview3D'
 import { Button } from './ui/button'
 
+function GithubIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.633 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.712-4.042-1.582-4.042-1.582-.546-1.367-1.335-1.731-1.335-1.731-1.09-.733.082-.718.082-.718 1.205.083 1.84 1.218 1.84 1.218 1.07 1.804 2.809 1.283 3.495.982.108-.763.418-1.283.761-1.578-2.665-.298-5.466-1.31-5.466-5.828 0-1.287.468-2.339 1.235-3.164-.123-.298-.535-1.497.117-3.122 0 0 1.007-.317 3.3 1.209a11.62 11.62 0 0 1 3-.397c1.02.005 2.047.137 3.006.397 2.292-1.526 3.297-1.209 3.297-1.209.653 1.625.241 2.824.118 3.122.768.825 1.233 1.877 1.233 3.164 0 4.53-2.805 5.526-5.476 5.818.43.363.812 1.082.812 2.181 0 1.575-.015 2.843-.015 3.229 0 .315.219.683.825.567C20.565 21.923 24 17.503 24 12.292 24 5.78 18.627.5 12 .5z" />
+    </svg>
+  )
+}
+
+const GITHUB_URL = 'https://github.com/jaroslaw-weber/gridfinity-cutout-lite'
+
 function initialParams(): InsertParameters {
   const c1 = makeCutout('circle', 1)
   return {
@@ -101,6 +116,22 @@ export default function App() {
           {params.gridX}×{params.gridY} · {params.heightUnits}U · {params.width}
           ×{params.depth} mm
         </span>
+        <div className="flex items-center gap-3">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted hover:text-foreground text-xs"
+            aria-label="GitHub repository"
+          >
+            Support the project
+          </a>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" aria-label="GitHub repository">
+            <Button variant="outline" className="gap-2">
+              <GithubIcon className="h-4 w-4" /> GitHub
+            </Button>
+          </a>
+        </div>
       </header>
 
       <p className="border-border bg-panel text-muted m-0 border-b px-[18px] py-[10px] text-[13px]">
