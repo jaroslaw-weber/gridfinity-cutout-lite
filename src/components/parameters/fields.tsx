@@ -3,7 +3,7 @@ export function Num({
   value,
   onChange,
   step = 0.5,
-  min = 0
+  min = 0,
 }: {
   label: string
   value: number
@@ -13,13 +13,13 @@ export function Num({
 }) {
   return (
     <div className="mb-3 min-w-0 flex-1">
-      <label className="mb-1 block text-[12px] text-muted">{label}</label>
+      <label className="text-muted mb-1 block text-[12px]">{label}</label>
       <input
         type="number"
         value={value}
         step={step}
         min={min}
-        className="w-full rounded-md border border-border bg-panel-2 px-2 py-[6px] text-[13px]"
+        className="border-border bg-panel-2 w-full rounded-md border px-2 py-[6px] text-[13px]"
         onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
       />
     </div>
@@ -32,7 +32,7 @@ export function SliderNum({
   onChange,
   min = 0,
   max,
-  step = 0.5
+  step = 0.5,
 }: {
   label: string
   value: number
@@ -43,8 +43,8 @@ export function SliderNum({
 }) {
   return (
     <div className="mb-3 min-w-0 flex-1">
-      <label className="mb-1 block text-[12px] text-muted">{label}</label>
-      <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-panel-2 px-2 py-[6px]">
+      <label className="text-muted mb-1 block text-[12px]">{label}</label>
+      <div className="border-border bg-panel-2 flex min-w-0 items-center gap-2 rounded-md border px-2 py-[6px]">
         <input
           type="range"
           min={min}
@@ -60,7 +60,7 @@ export function SliderNum({
           step={step}
           min={min}
           max={max}
-          className="w-[52px] min-w-[52px] appearance-none rounded-md border border-border bg-panel-2 px-[6px] py-1 text-center text-[13px] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+          className="border-border bg-panel-2 w-[52px] min-w-[52px] appearance-none rounded-md border px-[6px] py-1 text-center text-[13px] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
           onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
         />
       </div>

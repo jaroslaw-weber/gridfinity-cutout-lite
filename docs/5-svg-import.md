@@ -4,12 +4,12 @@ For custom tools, users should be able to import an SVG.
 
 This allows someone to trace an object in:
 
-* Inkscape
-* Illustrator
-* Affinity Designer
-* Figma
-* CAD software
-* another tracing tool
+- Inkscape
+- Illustrator
+- Affinity Designer
+- Figma
+- CAD software
+- another tracing tool
 
 and then use that outline directly as a cutout.
 

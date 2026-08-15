@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+
 import type { InsertParameters } from '../types'
 import { supportHeight } from '../types'
 import { unitedCutouts } from './polygons'
@@ -36,7 +37,7 @@ export function buildScene(params: InsertParameters): THREE.Group {
   const plateGeo = new THREE.ExtrudeGeometry(shape, {
     depth: plateThickness,
     bevelEnabled: false,
-    curveSegments: 32
+    curveSegments: 32,
   })
   const plate = new THREE.Mesh(plateGeo)
   plate.rotation.x = -Math.PI / 2
@@ -48,22 +49,26 @@ export function buildScene(params: InsertParameters): THREE.Group {
     [-1, 1],
     [1, 1],
     [1, -1],
-    [-1, -1]
+    [-1, -1],
   ]
 
   for (const [sx, sy] of corners) {
     // horizontal wall (along X)
-    const hwBox = new THREE.Mesh(
-      new THREE.BoxGeometry(len, sH, hs)
+    const hwBox = new THREE.Mesh(new THREE.BoxGeometry(len, sH, hs))
+    hwBox.position.set(
+      sx * (hw - len / 2),
+      plateThickness + sH / 2,
+      sy * (hd - ins - hs / 2),
     )
-    hwBox.position.set(sx * (hw - len / 2), plateThickness + sH / 2, sy * (hd - ins - hs / 2))
     group.add(hwBox)
 
     // vertical wall (along Z)
-    const vwBox = new THREE.Mesh(
-      new THREE.BoxGeometry(hs, sH, len)
+    const vwBox = new THREE.Mesh(new THREE.BoxGeometry(hs, sH, len))
+    vwBox.position.set(
+      sx * (hw - ins - hs / 2),
+      plateThickness + sH / 2,
+      sy * (hd - len / 2),
     )
-    vwBox.position.set(sx * (hw - ins - hs / 2), plateThickness + sH / 2, sy * (hd - len / 2))
     group.add(vwBox)
   }
 

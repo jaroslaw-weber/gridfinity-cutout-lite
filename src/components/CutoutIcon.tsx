@@ -1,6 +1,6 @@
+import { localPolygon } from '../lib/geometry'
 import type { Cutout, CutoutType } from '../lib/types'
 import { makeCutout } from '../lib/types'
-import { localPolygon } from '../lib/geometry'
 
 interface Pt {
   x: number
@@ -10,7 +10,7 @@ interface Pt {
 export default function CutoutIcon({
   type,
   cutout,
-  size = 18
+  size = 18,
 }: {
   type?: CutoutType
   cutout?: Cutout
@@ -26,7 +26,10 @@ export default function CutoutIcon({
   }
 
   const pts = localPolygon(c) as Pt[]
-  const max = Math.max(1, ...pts.map((p) => Math.max(Math.abs(p.x), Math.abs(p.y))))
+  const max = Math.max(
+    1,
+    ...pts.map((p) => Math.max(Math.abs(p.x), Math.abs(p.y))),
+  )
   const scale = 5 / (max + 0.5)
   const points = pts
     .map((p) => `${(p.x * scale).toFixed(3)},${(p.y * scale).toFixed(3)}`)
@@ -37,7 +40,11 @@ export default function CutoutIcon({
       width={size}
       height={size}
       viewBox="-7 -7 14 14"
-      style={{ flexShrink: 0, display: 'inline-block', verticalAlign: 'middle' }}
+      style={{
+        flexShrink: 0,
+        display: 'inline-block',
+        verticalAlign: 'middle',
+      }}
       aria-hidden="true"
     >
       <polygon

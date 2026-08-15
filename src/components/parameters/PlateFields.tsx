@@ -36,8 +36,8 @@ export function PlateFields({ params, patch }: Props) {
       </div>
 
       <div className="mb-3">
-        <label className="mb-1 block text-[12px] text-muted">Height (U)</label>
-        <div className="flex items-center gap-2 rounded-md border border-border bg-panel-2 px-2 py-[6px]">
+        <label className="text-muted mb-1 block text-[12px]">Height (U)</label>
+        <div className="border-border bg-panel-2 flex items-center gap-2 rounded-md border px-2 py-[6px]">
           <input
             type="range"
             min={1}
@@ -49,9 +49,7 @@ export function PlateFields({ params, patch }: Props) {
             }
             className="min-w-0 flex-1 accent-[#4f8cff]"
           />
-          <output
-            className="w-7 text-center text-[13px] font-semibold text-accent-2"
-          >
+          <output className="text-accent-2 w-7 text-center text-[13px] font-semibold">
             {params.heightUnits}
           </output>
         </div>

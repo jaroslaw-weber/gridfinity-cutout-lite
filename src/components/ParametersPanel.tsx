@@ -19,8 +19,8 @@ export default function ParametersPanel(p: Props) {
   const { params, patch } = p
 
   return (
-    <div className="overflow-auto bg-panel p-[14px]">
-      <h2 className="mb-3 text-[12px] uppercase tracking-widest text-muted">
+    <div className="bg-panel overflow-auto p-[14px]">
+      <h2 className="text-muted mb-3 text-[12px] tracking-widest uppercase">
         Parameters
       </h2>
 
@@ -28,7 +28,7 @@ export default function ParametersPanel(p: Props) {
 
       <SupportFields params={params} patch={patch} />
 
-      <h2 className="mb-3 text-[12px] uppercase tracking-widest text-muted">
+      <h2 className="text-muted mb-3 text-[12px] tracking-widest uppercase">
         Cutouts
       </h2>
 

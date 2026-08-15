@@ -3,7 +3,7 @@ import { SliderNum } from './fields'
 
 export function ShapeFields({
   cutout,
-  onChange
+  onChange,
 }: {
   cutout: Cutout
   onChange: (p: Partial<Cutout>) => void

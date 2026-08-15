@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { STLExporter } from 'three-stdlib'
+
 import type { Cutout, InsertParameters } from '../types'
 
 export function exportSTL(group: THREE.Group): Blob {

@@ -9,6 +9,16 @@ export type CutoutType =
 
 export type ViewMode = 'print' | 'preview'
 
+export const CUTOUT_TYPES: Array<{ type: CutoutType; label: string }> = [
+  { type: 'circle', label: 'Circle' },
+  { type: 'capsule', label: 'Capsule' },
+  { type: 'rounded-rect', label: 'Rounded Rect' },
+  { type: 'rectangle', label: 'Rectangle' },
+  { type: 'triangle', label: 'Triangle' },
+  { type: 'diamond', label: 'Diamond' },
+  { type: 'hexagon', label: 'Hexagon' },
+]
+
 export interface BaseCutout {
   id: string
   type: CutoutType
@@ -90,7 +100,7 @@ export const defaults = {
 
   supportThickness: 1.4,
   supportLength: 7,
-  supportInset: 0
+  supportInset: 0,
 }
 
 export interface InsertParameters {
@@ -115,7 +125,7 @@ export function insertDimension(units: number): number {
 export function supportHeight(params: InsertParameters): number {
   return Math.max(
     0,
-    params.heightUnits * defaults.gridfinityUnitHeight - params.plateThickness
+    params.heightUnits * defaults.gridfinityUnitHeight - params.plateThickness,
   )
 }
 
@@ -126,7 +136,7 @@ export function makeCutout(type: CutoutType, counter: number): Cutout {
     y: 0,
     rotation: 0,
     clearance: 0.25,
-    scale: 1
+    scale: 1,
   }
   switch (type) {
     case 'circle':

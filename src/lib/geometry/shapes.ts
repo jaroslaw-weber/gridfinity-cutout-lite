@@ -11,7 +11,7 @@ function sampleArc(
   r: number,
   startRad: number,
   endRad: number,
-  segments: number
+  segments: number,
 ): Vec2[] {
   const pts: Vec2[] = []
   for (let i = 0; i <= segments; i++) {
@@ -42,7 +42,7 @@ export function localPolygon(c: Cutout): Vec2[] {
       const ys = h / 2 - r
       const pts: Vec2[] = [
         { x: r, y: ys },
-        { x: r, y: -ys }
+        { x: r, y: -ys },
       ]
       const bot = sampleArc(0, -ys, r, 0, -Math.PI, 16)
       for (let i = 1; i < bot.length; i++) pts.push(bot[i])
@@ -54,13 +54,20 @@ export function localPolygon(c: Cutout): Vec2[] {
     case 'rounded-rect': {
       const w = c.width * s + 2 * cl
       const h = c.height * s + 2 * cl
-      const r = Math.min((c.radius * s + cl) || 1, w / 2, h / 2)
+      const r = Math.min(c.radius * s + cl || 1, w / 2, h / 2)
       const hw = w / 2
       const hh = h / 2
       const pts: Vec2[] = [{ x: -hw + r, y: hh }]
       const topRight = sampleArc(hw - r, hh - r, r, Math.PI / 2, 0, 8)
       const bottomRight = sampleArc(hw - r, -hh + r, r, 0, -Math.PI / 2, 8)
-      const bottomLeft = sampleArc(-hw + r, -hh + r, r, -Math.PI / 2, -Math.PI, 8)
+      const bottomLeft = sampleArc(
+        -hw + r,
+        -hh + r,
+        r,
+        -Math.PI / 2,
+        -Math.PI,
+        8,
+      )
       const topLeft = sampleArc(-hw + r, hh - r, r, Math.PI, Math.PI / 2, 8)
       pts.push({ x: hw - r, y: hh })
       for (let i = 1; i < topRight.length; i++) pts.push(topRight[i])
@@ -81,7 +88,7 @@ export function localPolygon(c: Cutout): Vec2[] {
         { x: hw, y: hh },
         { x: hw, y: -hh },
         { x: -hw, y: -hh },
-        { x: -hw, y: hh }
+        { x: -hw, y: hh },
       ]
     }
     case 'triangle': {
@@ -92,7 +99,7 @@ export function localPolygon(c: Cutout): Vec2[] {
       return [
         { x: -hw, y: hh },
         { x: hw, y: hh },
-        { x: 0, y: -hh }
+        { x: 0, y: -hh },
       ]
     }
     case 'diamond': {
@@ -104,7 +111,7 @@ export function localPolygon(c: Cutout): Vec2[] {
         { x: 0, y: hh },
         { x: hw, y: 0 },
         { x: 0, y: -hh },
-        { x: -hw, y: 0 }
+        { x: -hw, y: 0 },
       ]
     }
     case 'hexagon': {
@@ -119,7 +126,7 @@ export function localPolygon(c: Cutout): Vec2[] {
         { x: qw, y: -hh },
         { x: -qw, y: -hh },
         { x: -hw, y: 0 },
-        { x: -qw, y: hh }
+        { x: -qw, y: hh },
       ]
     }
   }

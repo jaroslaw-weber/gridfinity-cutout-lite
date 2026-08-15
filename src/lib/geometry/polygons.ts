@@ -1,4 +1,5 @@
 import polygonClipping from 'polygon-clipping'
+
 import type { Cutout, InsertParameters } from '../types'
 import type { Vec2 } from './shapes'
 import { localPolygon } from './shapes'
@@ -9,18 +10,20 @@ function transformPolygon(pts: Vec2[], c: Cutout): Vec2[] {
   const sin = Math.sin(rad)
   return pts.map((p) => ({
     x: p.x * cos - p.y * sin + c.x,
-    y: p.x * sin + p.y * cos + c.y
+    y: p.x * sin + p.y * cos + c.y,
   }))
 }
 
-export function plateRect(params: Pick<InsertParameters, 'width' | 'depth'>): Vec2[] {
+export function plateRect(
+  params: Pick<InsertParameters, 'width' | 'depth'>,
+): Vec2[] {
   const hw = params.width / 2
   const hd = params.depth / 2
   return [
     { x: hw, y: hd },
     { x: hw, y: -hd },
     { x: -hw, y: -hd },
-    { x: -hw, y: hd }
+    { x: -hw, y: hd },
   ]
 }
 
@@ -43,9 +46,11 @@ function signedArea(pts: Vec2[]): number {
 // rings wound in the same direction as the plate outline (clockwise).
 export function unitedCutouts(params: InsertParameters): Vec2[][] {
   const polys = params.cutouts.map((c) => [
-    cutoutPoints(c).map((p) => [p.x, p.y] as [number, number])
+    cutoutPoints(c).map((p) => [p.x, p.y] as [number, number]),
   ])
-  const result = polygonClipping.union(polys) as Array<Array<Array<[number, number]>>>
+  const result = polygonClipping.union(polys) as Array<
+    Array<Array<[number, number]>>
+  >
   const rings: Vec2[][] = []
   for (const poly of result) {
     for (const ring of poly) {

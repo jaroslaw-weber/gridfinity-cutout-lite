@@ -6,8 +6,8 @@ export default defineConfig({
   output: 'static',
   integrations: [react()],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
   site: 'https://jaroslaw-weber.github.io',
-  base: '/gridfinity-cutout-lite/'
+  base: '/gridfinity-cutout-lite/',
 })

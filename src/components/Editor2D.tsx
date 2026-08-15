@@ -1,6 +1,7 @@
-import { useRef, useState, type PointerEvent } from 'react'
-import type { Cutout, InsertParameters } from '../lib/types'
+import { type PointerEvent, useRef, useState } from 'react'
+
 import { cutoutPoints, plateRect } from '../lib/geometry'
+import type { Cutout, InsertParameters } from '../lib/types'
 
 interface Props {
   params: InsertParameters
@@ -14,7 +15,12 @@ function ptsToPath(pts: Array<{ x: number; y: number }>): string {
   return `M ${reversed.join(' L ')} Z`
 }
 
-export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }: Props) {
+export default function Editor2D({
+  params,
+  selectedId,
+  setSelectedId,
+  onUpdate,
+}: Props) {
   const svgRef = useRef<SVGSVGElement>(null)
   const dragRef = useRef<{
     id: string
@@ -46,7 +52,7 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
       startSvgX: s.x,
       startSvgY: s.y,
       startX: cutout.x,
-      startY: cutout.y
+      startY: cutout.y,
     }
   }
 
@@ -56,7 +62,7 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
     const d = dragRef.current
     onUpdate(d.id, {
       x: d.startX + (s.x - d.startSvgX),
-      y: d.startY + (s.y - d.startSvgY)
+      y: d.startY + (s.y - d.startSvgY),
     })
   }
 
@@ -68,8 +74,8 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
   const platePath = ptsToPath(plate)
 
   return (
-    <div className="flex h-full flex-col overflow-auto bg-panel p-[14px]">
-      <h2 className="mb-3 text-[12px] uppercase tracking-widest text-muted">
+    <div className="bg-panel flex h-full flex-col overflow-auto p-[14px]">
+      <h2 className="text-muted mb-3 text-[12px] tracking-widest uppercase">
         2D Editor
       </h2>
       <div
@@ -77,7 +83,7 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
         style={{
           minHeight: 0,
           background:
-            'radial-gradient(circle at 40% 40%, #1b1f27 0, #15181f 100%)'
+            'radial-gradient(circle at 40% 40%, #1b1f27 0, #15181f 100%)',
         }}
       >
         <svg
@@ -106,7 +112,7 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
             y2={params.depth / 2}
           />
           <path
-            className="fill-[rgba(79,140,255,0.04)] stroke-muted"
+            className="stroke-muted fill-[rgba(79,140,255,0.04)]"
             strokeWidth={1}
             strokeDasharray="4 4"
             d={platePath}
@@ -131,9 +137,9 @@ export default function Editor2D({ params, selectedId, setSelectedId, onUpdate }
           })}
         </svg>
       </div>
-      <div className="mt-2 text-center text-[11px] text-muted">
-        Drag shapes to position · X/Y = {params.width}×{params.depth} mm · center{' '}
-        = (0, 0)
+      <div className="text-muted mt-2 text-center text-[11px]">
+        Drag shapes to position · X/Y = {params.width}×{params.depth} mm ·
+        center = (0, 0)
       </div>
     </div>
   )

@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
+
+import { buildScene, defaultFilename, exportSTL } from '../lib/geometry'
 import type { Cutout, CutoutType, InsertParameters } from '../lib/types'
 import { defaults, makeCutout } from '../lib/types'
-import { buildScene, defaultFilename, exportSTL } from '../lib/geometry'
-import ParametersPanel from './ParametersPanel'
 import Editor2D from './Editor2D'
+import ParametersPanel from './ParametersPanel'
 import Preview3D from './Preview3D'
 import { Button } from './ui/button'
 
@@ -19,46 +20,43 @@ function initialParams(): InsertParameters {
     supportThickness: defaults.supportThickness,
     supportLength: defaults.supportLength,
     supportInset: defaults.supportInset,
-    cutouts: [c1]
+    cutouts: [c1],
   }
 }
 
 export default function App() {
   const [params, setParams] = useState<InsertParameters>(initialParams)
   const [selectedId, setSelectedId] = useState<string | null>(
-    () => initialParams().cutouts[0]?.id ?? null
+    () => initialParams().cutouts[0]?.id ?? null,
   )
 
   const patch = useCallback((p: Partial<InsertParameters>) => {
     setParams((prev) => ({ ...prev, ...p }))
   }, [])
 
-  const addCutout = useCallback(
-    (type: CutoutType) => {
-      let id: string | null = null
-      setParams((prev) => {
-        const c = makeCutout(type, prev.cutouts.length)
-        id = c.id
-        return { ...prev, cutouts: [...prev.cutouts, c] }
-      })
-      setSelectedId(id)
-    },
-    []
-  )
+  const addCutout = useCallback((type: CutoutType) => {
+    let id: string | null = null
+    setParams((prev) => {
+      const c = makeCutout(type, prev.cutouts.length)
+      id = c.id
+      return { ...prev, cutouts: [...prev.cutouts, c] }
+    })
+    setSelectedId(id)
+  }, [])
 
   const updateCutout = useCallback((id: string, patch: Partial<Cutout>) => {
     setParams((prev) => ({
       ...prev,
       cutouts: prev.cutouts.map((c) =>
-        c.id === id ? ({ ...c, ...patch } as Cutout) : c
-      )
+        c.id === id ? ({ ...c, ...patch } as Cutout) : c,
+      ),
     }))
   }, [])
 
   const removeCutout = useCallback((id: string) => {
     setParams((prev) => ({
       ...prev,
-      cutouts: prev.cutouts.filter((c) => c.id !== id)
+      cutouts: prev.cutouts.filter((c) => c.id !== id),
     }))
     setSelectedId(null)
   }, [])
@@ -68,7 +66,12 @@ export default function App() {
     setParams((prev) => {
       const src = prev.cutouts.find((c) => c.id === id)
       if (!src) return prev
-      const copy = { ...src, id: `${Date.now()}_dup`, x: src.x + 5, y: src.y + 5 } as Cutout
+      const copy = {
+        ...src,
+        id: `${Date.now()}_dup`,
+        x: src.x + 5,
+        y: src.y + 5,
+      } as Cutout
       newId = copy.id
       return { ...prev, cutouts: [...prev.cutouts, copy] }
     })
@@ -92,23 +95,23 @@ export default function App() {
 
   return (
     <div className="app flex h-full flex-col">
-      <header className="flex items-baseline justify-between border-b border-border bg-panel px-[18px] py-3">
+      <header className="border-border bg-panel flex items-baseline justify-between border-b px-[18px] py-3">
         <h1 className="m-0 text-base font-semibold">Gridfinity Cutout Lite</h1>
-        <span className="text-xs text-muted">
-          {params.gridX}×{params.gridY} · {params.heightUnits}U ·{' '}
-          {params.width}×{params.depth} mm
+        <span className="text-muted text-xs">
+          {params.gridX}×{params.gridY} · {params.heightUnits}U · {params.width}
+          ×{params.depth} mm
         </span>
       </header>
 
-      <p className="m-0 border-b border-border bg-panel px-[18px] py-[10px] text-[13px] text-muted">
-        Design lightweight Gridfinity cutout inserts: pick a grid size, drop cutout
-        shapes onto the plate, then export an STL to print.
+      <p className="border-border bg-panel text-muted m-0 border-b px-[18px] py-[10px] text-[13px]">
+        Design lightweight Gridfinity cutout inserts: pick a grid size, drop
+        cutout shapes onto the plate, then export an STL to print.
       </p>
 
-      <div className="border-b border-border bg-panel px-[18px] py-3 md:hidden">
-        <p className="m-0 text-center text-lg font-semibold text-accent">
-          This tool is best experienced in desktop view — please switch to a larger
-          screen for the best experience.
+      <div className="border-border bg-panel border-b px-[18px] py-3 md:hidden">
+        <p className="text-accent m-0 text-center text-lg font-semibold">
+          This tool is best experienced in desktop view — please switch to a
+          larger screen for the best experience.
         </p>
       </div>
 
@@ -134,11 +137,9 @@ export default function App() {
         <Preview3D scene={scene} />
       </div>
 
-      <div className="flex gap-2 border-t border-border bg-panel px-[14px] py-3">
-        <Button onClick={onExport}>
-          Export STL
-        </Button>
-        <span className="m-auto text-xs text-muted">
+      <div className="border-border bg-panel flex gap-2 border-t px-[14px] py-3">
+        <Button onClick={onExport}>Export STL</Button>
+        <span className="text-muted m-auto text-xs">
           Client-side only · STL: {defaultFilename(params)}
         </span>
       </div>

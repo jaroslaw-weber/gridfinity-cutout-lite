@@ -23,14 +23,14 @@ The first version should support a small set of common presets.
 
 Useful for:
 
-* pens
-* screwdrivers
-* markers
-* cylindrical tools
+- pens
+- screwdrivers
+- markers
+- cylindrical tools
 
 ```ts
 interface CircleCutout extends BaseCutout {
-  type: "circle"
+  type: 'circle'
   diameter: number
 }
 ```
@@ -51,15 +51,15 @@ Example:
 
 Useful for:
 
-* pens laying sideways
-* screwdrivers
-* elongated handles
-* tweezers
-* small hand tools
+- pens laying sideways
+- screwdrivers
+- elongated handles
+- tweezers
+- small hand tools
 
 ```ts
 interface CapsuleCutout extends BaseCutout {
-  type: "capsule"
+  type: 'capsule'
 
   width: number
   height: number
@@ -76,15 +76,15 @@ Example:
 
 Useful for:
 
-* USB drives
-* electronics
-* small cases
-* rectangular tools
-* batteries
+- USB drives
+- electronics
+- small cases
+- rectangular tools
+- batteries
 
 ```ts
 interface RoundedRectCutout extends BaseCutout {
-  type: "rounded-rect"
+  type: 'rounded-rect'
 
   width: number
   height: number
@@ -96,7 +96,7 @@ interface RoundedRectCutout extends BaseCutout {
 
 ```ts
 interface RectangleCutout extends BaseCutout {
-  type: "rectangle"
+  type: 'rectangle'
 
   width: number
   height: number
@@ -112,17 +112,17 @@ Example:
 ```ts
 cutouts: [
   {
-    type: "circle",
+    type: 'circle',
     diameter: 10,
     x: 13,
-    y: 19
+    y: 19,
   },
   {
-    type: "circle",
+    type: 'circle',
     diameter: 10,
     x: 25,
-    y: 19
-  }
+    y: 19,
+  },
 ]
 ```
 
@@ -204,17 +204,17 @@ Example preset:
 ```ts
 const doublePenPreset = [
   {
-    type: "circle",
+    type: 'circle',
     diameter: 10,
     x: 13,
-    y: 19
+    y: 19,
   },
   {
-    type: "circle",
+    type: 'circle',
     diameter: 10,
     x: 25,
-    y: 19
-  }
+    y: 19,
+  },
 ]
 ```
 

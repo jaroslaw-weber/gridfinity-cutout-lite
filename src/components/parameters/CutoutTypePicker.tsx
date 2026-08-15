@@ -1,22 +1,12 @@
-import type { CutoutType } from '../../lib/types'
+import { CUTOUT_TYPES, type CutoutType } from '../../lib/types'
 import CutoutIcon from '../CutoutIcon'
 
 export const BTN =
   'cursor-pointer rounded-md border border-border bg-panel-2 px-[11px] py-[7px] text-[13px] hover:border-accent-2 hover:text-accent-2'
 export const BTN_SM = `${BTN} px-[7px] py-[3px] text-[12px] ml-1`
 
-export const CUTOUT_TYPES: Array<{ type: CutoutType; label: string }> = [
-  { type: 'circle', label: 'Circle' },
-  { type: 'capsule', label: 'Capsule' },
-  { type: 'rounded-rect', label: 'Rounded Rect' },
-  { type: 'rectangle', label: 'Rectangle' },
-  { type: 'triangle', label: 'Triangle' },
-  { type: 'diamond', label: 'Diamond' },
-  { type: 'hexagon', label: 'Hexagon' }
-]
-
 export default function CutoutTypePicker({
-  onAdd
+  onAdd,
 }: {
   onAdd: (type: CutoutType) => void
 }) {

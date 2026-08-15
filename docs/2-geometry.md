@@ -17,7 +17,7 @@ const defaults = {
 
   supportThickness: 1.4,
   supportLength: 7,
-  supportInset: 0
+  supportInset: 0,
 }
 ```
 
@@ -31,9 +31,7 @@ total height = 3 × 7 mm
 The support height is:
 
 ```ts
-supportHeight =
-  heightUnits * gridfinityUnitHeight
-  - plateThickness
+supportHeight = heightUnits * gridfinityUnitHeight - plateThickness
 ```
 
 For the default:

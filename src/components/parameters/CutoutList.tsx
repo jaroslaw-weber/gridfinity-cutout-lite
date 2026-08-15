@@ -1,6 +1,7 @@
 import type { Cutout } from '../../lib/types'
+import { CUTOUT_TYPES } from '../../lib/types'
 import CutoutIcon from '../CutoutIcon'
-import { BTN_SM, CUTOUT_TYPES } from './CutoutTypePicker'
+import { BTN_SM } from './CutoutTypePicker'
 import { Num, SliderNum } from './fields'
 import { ShapeFields } from './ShapeFields'
 
@@ -19,12 +20,12 @@ export function CutoutList({
   setSelectedId,
   onUpdate,
   onRemove,
-  onDuplicate
+  onDuplicate,
 }: Props) {
   return (
     <>
       {cutouts.length === 0 && (
-        <p className="text-[12px] text-muted">
+        <p className="text-muted text-[12px]">
           No cutouts yet. Add one above, or choose a preset below.
         </p>
       )}
@@ -34,17 +35,14 @@ export function CutoutList({
         return (
           <div
             key={c.id}
-            className={`mb-2 rounded-lg border bg-panel-2 p-2.5 ${
+            className={`bg-panel-2 mb-2 rounded-lg border p-2.5 ${
               sel ? 'border-accent' : 'border-border'
             }`}
             onClick={() => setSelectedId(c.id)}
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="flex items-center gap-1 text-[13px] font-semibold">
-                <CutoutIcon
-                  cutout={c}
-                  size={16}
-                />
+                <CutoutIcon cutout={c} size={16} />
                 {CUTOUT_TYPES.find((t) => t.type === c.type)?.label}
               </span>
               <span className="flex">
@@ -75,7 +73,10 @@ export function CutoutList({
               className="m-0 min-w-0 border-0 p-0"
               onClick={(e) => e.stopPropagation()}
             >
-              <ShapeFields cutout={c} onChange={(patch) => onUpdate(c.id, patch)} />
+              <ShapeFields
+                cutout={c}
+                onChange={(patch) => onUpdate(c.id, patch)}
+              />
               <div className="flex gap-2">
                 <Num
                   label="X (mm)"
@@ -116,7 +117,7 @@ export function CutoutList({
       })}
 
       {selectedId && (
-        <p className="mt-2 text-[12px] text-muted">
+        <p className="text-muted mt-2 text-[12px]">
           Tip: drag the shape in the 2D editor to position it.
         </p>
       )}

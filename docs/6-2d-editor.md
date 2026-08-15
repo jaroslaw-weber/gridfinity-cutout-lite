@@ -16,14 +16,14 @@ Example:
 
 Users should be able to:
 
-* click a shape
-* drag it
-* resize it
-* rotate it
-* duplicate it
-* delete it
-* align it
-* center it
+- click a shape
+- drag it
+- resize it
+- rotate it
+- duplicate it
+- delete it
+- align it
+- center it
 
 The editor should show measurements in millimeters.
 
