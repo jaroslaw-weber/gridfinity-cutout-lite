@@ -105,6 +105,13 @@ export default function App() {
         shapes onto the plate, then export an STL to print.
       </p>
 
+      <div className="border-b border-border bg-panel px-[18px] py-3 md:hidden">
+        <p className="m-0 text-center text-lg font-semibold text-accent">
+          This tool is best experienced in desktop view — please switch to a larger
+          screen for the best experience.
+        </p>
+      </div>
+
       <div className="layout">
         <ParametersPanel
           params={params}
