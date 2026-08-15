@@ -60,7 +60,7 @@ export function SliderNum({
           step={step}
           min={min}
           max={max}
-          className="w-[52px] min-w-[52px] rounded-md border border-border bg-panel-2 px-[6px] py-1 text-center text-[13px]"
+          className="w-[52px] min-w-[52px] appearance-none rounded-md border border-border bg-panel-2 px-[6px] py-1 text-center text-[13px] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
           onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
         />
       </div>

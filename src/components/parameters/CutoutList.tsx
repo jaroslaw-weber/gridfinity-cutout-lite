@@ -34,8 +34,8 @@ export function CutoutList({
         return (
           <div
             key={c.id}
-            className={`mb-2 rounded-lg border bg-panel-2 p-[10px]${
-              sel ? ' border-accent' : ' border-border'
+            className={`mb-2 rounded-lg border bg-panel-2 p-2.5 ${
+              sel ? 'border-accent' : 'border-border'
             }`}
             onClick={() => setSelectedId(c.id)}
           >
@@ -72,7 +72,7 @@ export function CutoutList({
             </div>
 
             <fieldset
-              className="m-0 border-0 p-0"
+              className="m-0 min-w-0 border-0 p-0"
               onClick={(e) => e.stopPropagation()}
             >
               <ShapeFields cutout={c} onChange={(patch) => onUpdate(c.id, patch)} />
@@ -92,7 +92,7 @@ export function CutoutList({
                   onChange={(v) => onUpdate(c.id, { y: v })}
                 />
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2">
                 <SliderNum
                   label="Rotation (°)"
                   value={c.rotation}
