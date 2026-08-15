@@ -42,17 +42,15 @@ function localPolygon(c: Cutout): Vec2[] {
       const h = c.height * s + 2 * cl
       const r = w / 2
       const ys = h / 2 - r
-      const arc = (ca: number, cb: number, cy2: number) =>
-        sampleArc(0, cy2, r, ca, cb, 16)
-      const pts: Vec2[] = []
-      // right side going down
-      pts.push({ x: r, y: ys }, { x: r, y: -ys })
-      // bottom semicircle (CCW)
-      pts.push(...arc(Math.PI / 2, -Math.PI / 2, -ys))
-      // left side going up
-      pts.push({ x: -r, y: -ys }, { x: -r, y: ys })
-      // top semicircle (CCW)
-      pts.push(...arc(-Math.PI / 2, Math.PI / 2, ys))
+      const pts: Vec2[] = [
+        { x: r, y: ys },
+        { x: r, y: -ys }
+      ]
+      const bot = sampleArc(0, -ys, r, 0, -Math.PI, 16)
+      for (let i = 1; i < bot.length; i++) pts.push(bot[i])
+      pts.push({ x: -r, y: ys })
+      const top = sampleArc(0, ys, r, Math.PI, 0, 16)
+      for (let i = 1; i < top.length; i++) pts.push(top[i])
       return pts
     }
     case 'rounded-rect': {
@@ -61,16 +59,19 @@ function localPolygon(c: Cutout): Vec2[] {
       const r = Math.min((c.radius * s + cl) || 1, w / 2, h / 2)
       const hw = w / 2
       const hh = h / 2
-      const pts: Vec2[] = []
-      // start at top-right, walk clockwise to produce CCW polygon
-      const arc = (cx: number, cy: number, from: number, to: number) =>
-        sampleArc(cx, cy, r, from, to, 8)
-      pts.push(
-        ...arc(hw - r, hh - r, 0, Math.PI / 2), // top-right
-        ...arc(hw - r, -hh + r, Math.PI / 2, Math.PI), // bottom-right
-        ...arc(-hw + r, -hh + r, Math.PI, (3 * Math.PI) / 2), // bottom-left
-        ...arc(-hw + r, hh - r, (3 * Math.PI) / 2, Math.PI * 2) // top-left
-      )
+      const pts: Vec2[] = [{ x: -hw + r, y: hh }]
+      const topRight = sampleArc(hw - r, hh - r, r, Math.PI / 2, 0, 8)
+      const bottomRight = sampleArc(hw - r, -hh + r, r, 0, -Math.PI / 2, 8)
+      const bottomLeft = sampleArc(-hw + r, -hh + r, r, -Math.PI / 2, -Math.PI, 8)
+      const topLeft = sampleArc(-hw + r, hh - r, r, Math.PI, Math.PI / 2, 8)
+      pts.push({ x: hw - r, y: hh })
+      for (let i = 1; i < topRight.length; i++) pts.push(topRight[i])
+      pts.push({ x: hw, y: -hh + r })
+      for (let i = 1; i < bottomRight.length; i++) pts.push(bottomRight[i])
+      pts.push({ x: -hw + r, y: -hh })
+      for (let i = 1; i < bottomLeft.length; i++) pts.push(bottomLeft[i])
+      pts.push({ x: -hw, y: hh - r })
+      for (let i = 1; i < topLeft.length; i++) pts.push(topLeft[i])
       return pts
     }
     case 'rectangle': {
@@ -178,14 +179,14 @@ export function buildScene(params: InsertParameters): THREE.Group {
     const hwBox = new THREE.Mesh(
       new THREE.BoxGeometry(len, sH, hs)
     )
-    hwBox.position.set(sx * (hw - ins - len / 2), plateThickness + sH / 2, sy * (hd - ins - hs / 2))
+    hwBox.position.set(sx * (hw - len / 2), plateThickness + sH / 2, sy * (hd - ins - hs / 2))
     group.add(hwBox)
 
     // vertical wall (along Z)
     const vwBox = new THREE.Mesh(
       new THREE.BoxGeometry(hs, sH, len)
     )
-    vwBox.position.set(sx * (hw - ins - hs / 2), plateThickness + sH / 2, sy * (hd - ins - len / 2))
+    vwBox.position.set(sx * (hw - ins - hs / 2), plateThickness + sH / 2, sy * (hd - len / 2))
     group.add(vwBox)
   }
 

@@ -130,11 +130,18 @@ p.app-intro {
   background: var(--panel);
 }
 
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .layout {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 280px 1fr 1fr;
-  grid-template-rows: 1fr auto;
-  height: calc(100vh - 86px);
+  grid-template-rows: 1fr;
   gap: 1px;
   background: var(--border);
 }

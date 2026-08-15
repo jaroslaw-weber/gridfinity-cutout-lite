@@ -91,7 +91,7 @@ export default function App() {
   const scene = useMemo(() => buildScene(params), [params])
 
   return (
-    <div className="app">
+    <div className="app flex h-full flex-col">
       <header className="flex items-baseline justify-between border-b border-border bg-panel px-[18px] py-3">
         <h1 className="m-0 text-base font-semibold">Gridfinity Cutout Lite</h1>
         <span className="text-xs text-muted">

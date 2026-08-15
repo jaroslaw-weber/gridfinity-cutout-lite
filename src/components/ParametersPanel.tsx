@@ -155,12 +155,43 @@ export default function ParametersPanel(p: Props) {
       </div>
 
       <div className="row">
-        <Num
-          label="Height (U)"
-          value={params.heightUnits}
-          step={1}
-          onChange={(u) => patch({ heightUnits: u })}
-        />
+        <div className="field height-slider">
+          <label>Height (U)</label>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              background: 'var(--panel-2)',
+              border: '1px solid var(--border)',
+              borderRadius: 6,
+              padding: '6px 8px'
+            }}
+          >
+            <input
+              type="range"
+              min={1}
+              max={12}
+              step={1}
+              value={params.heightUnits}
+              onChange={(e) =>
+                patch({ heightUnits: parseFloat(e.target.value) || 1 })
+              }
+              style={{ flex: 1, accentColor: '#4f8cff' }}
+            />
+            <output
+              style={{
+                minWidth: 28,
+                textAlign: 'center',
+                fontSize: 13,
+                color: 'var(--accent-2)',
+                fontWeight: 600
+              }}
+            >
+              {params.heightUnits}
+            </output>
+          </div>
+        </div>
         <Num
           label="Plate Thickness (mm)"
           value={params.plateThickness}
