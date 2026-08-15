@@ -44,7 +44,10 @@ const CUTOUT_TYPES: Array<{ type: CutoutType; label: string }> = [
   { type: 'circle', label: 'Circle' },
   { type: 'capsule', label: 'Capsule' },
   { type: 'rounded-rect', label: 'Rounded Rect' },
-  { type: 'rectangle', label: 'Rectangle' }
+  { type: 'rectangle', label: 'Rectangle' },
+  { type: 'triangle', label: 'Triangle' },
+  { type: 'diamond', label: 'Diamond' },
+  { type: 'hexagon', label: 'Hexagon' }
 ]
 
 function shapeFields(c: Cutout, onChange: (p: Partial<Cutout>) => void) {
@@ -101,6 +104,25 @@ function shapeFields(c: Cutout, onChange: (p: Partial<Cutout>) => void) {
         </>
       )
     case 'rectangle':
+      return (
+        <div className="row">
+          <Num
+            label="Width (mm)"
+            value={c.width}
+            step={0.1}
+            onChange={(v) => onChange({ width: v })}
+          />
+          <Num
+            label="Height (mm)"
+            value={c.height}
+            step={0.1}
+            onChange={(v) => onChange({ height: v })}
+          />
+        </div>
+      )
+    case 'triangle':
+    case 'diamond':
+    case 'hexagon':
       return (
         <div className="row">
           <Num
@@ -259,7 +281,7 @@ export default function ParametersPanel(p: Props) {
             <div className="cutout-head">
               <span className="name">
                 <CutoutIcon
-                  type={c.type}
+                  cutout={c}
                   size={16}
                 />
                 {CUTOUT_TYPES.find((t) => t.type === c.type)?.label}

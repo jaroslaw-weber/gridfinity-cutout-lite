@@ -1,4 +1,11 @@
-export type CutoutType = 'circle' | 'capsule' | 'rounded-rect' | 'rectangle'
+export type CutoutType =
+  | 'circle'
+  | 'capsule'
+  | 'rounded-rect'
+  | 'rectangle'
+  | 'triangle'
+  | 'diamond'
+  | 'hexagon'
 
 export type ViewMode = 'print' | 'preview'
 
@@ -36,7 +43,32 @@ export interface RectangleCutout extends BaseCutout {
   height: number
 }
 
-export type Cutout = CircleCutout | CapsuleCutout | RoundedRectCutout | RectangleCutout
+export interface TriangleCutout extends BaseCutout {
+  type: 'triangle'
+  width: number
+  height: number
+}
+
+export interface DiamondCutout extends BaseCutout {
+  type: 'diamond'
+  width: number
+  height: number
+}
+
+export interface HexagonCutout extends BaseCutout {
+  type: 'hexagon'
+  width: number
+  height: number
+}
+
+export type Cutout =
+  | CircleCutout
+  | CapsuleCutout
+  | RoundedRectCutout
+  | RectangleCutout
+  | TriangleCutout
+  | DiamondCutout
+  | HexagonCutout
 
 export interface GridfinityDefaults {
   gridPitch: number
@@ -105,5 +137,11 @@ export function makeCutout(type: CutoutType, counter: number): Cutout {
       return { ...seed, type: 'rounded-rect', width: 16, height: 30, radius: 2 }
     case 'rectangle':
       return { ...seed, type: 'rectangle', width: 16, height: 30 }
+    case 'triangle':
+      return { ...seed, type: 'triangle', width: 20, height: 18 }
+    case 'diamond':
+      return { ...seed, type: 'diamond', width: 18, height: 18 }
+    case 'hexagon':
+      return { ...seed, type: 'hexagon', width: 18, height: 20 }
   }
 }

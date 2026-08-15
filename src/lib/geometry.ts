@@ -23,7 +23,7 @@ function sampleArc(
   return pts
 }
 
-function localPolygon(c: Cutout): Vec2[] {
+export function localPolygon(c: Cutout): Vec2[] {
   const cl = c.clearance || 0
   const s = c.scale || 1
   switch (c.type) {
@@ -84,6 +84,44 @@ function localPolygon(c: Cutout): Vec2[] {
         { x: hw, y: -hh },
         { x: -hw, y: -hh },
         { x: -hw, y: hh }
+      ]
+    }
+    case 'triangle': {
+      const w = c.width * s + 2 * cl
+      const h = c.height * s + 2 * cl
+      const hw = w / 2
+      const hh = h / 2
+      return [
+        { x: -hw, y: hh },
+        { x: hw, y: hh },
+        { x: 0, y: -hh }
+      ]
+    }
+    case 'diamond': {
+      const w = c.width * s + 2 * cl
+      const h = c.height * s + 2 * cl
+      const hw = w / 2
+      const hh = h / 2
+      return [
+        { x: 0, y: hh },
+        { x: hw, y: 0 },
+        { x: 0, y: -hh },
+        { x: -hw, y: 0 }
+      ]
+    }
+    case 'hexagon': {
+      const w = c.width * s + 2 * cl
+      const h = c.height * s + 2 * cl
+      const hw = w / 2
+      const hh = h / 2
+      const qw = w / 4
+      return [
+        { x: qw, y: hh },
+        { x: hw, y: 0 },
+        { x: qw, y: -hh },
+        { x: -qw, y: -hh },
+        { x: -hw, y: 0 },
+        { x: -qw, y: hh }
       ]
     }
   }
@@ -211,6 +249,12 @@ export function typeLabel(c: Cutout): string {
       return `roundedrect_${c.width}x${c.height}mm`
     case 'rectangle':
       return `rect_${c.width}x${c.height}mm`
+    case 'triangle':
+      return `tri_${c.width}x${c.height}mm`
+    case 'diamond':
+      return `diamond_${c.width}x${c.height}mm`
+    case 'hexagon':
+      return `hex_${c.width}x${c.height}mm`
   }
 }
 
